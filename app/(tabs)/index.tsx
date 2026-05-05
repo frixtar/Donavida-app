@@ -1,12 +1,12 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, StatusBar } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { donante, historial, alertaActiva } from "../../constants/mockData";
+import { donante, historialDonaciones, alertaActiva } from "../../constants/mockData";
 import MenuLateral from "../../components/MenuLateral";
 
 export default function HomeScreen() {
   return (
     <MenuLateral>
-    <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#C0221A" />
       <ScrollView showsVerticalScrollIndicator={false}>
 
@@ -72,7 +72,7 @@ export default function HomeScreen() {
 
         {/* Historial */}
         <Text style={styles.seccionTitulo}>Historial reciente</Text>
-        {historial.map((item) => (
+        {historialDonaciones.map((item) => (   // 👈 usa historialDonaciones
           <View key={item.id} style={styles.historialItem}>
             <View style={styles.historialIcono}>
               <Text style={styles.historialCruz}>+</Text>
@@ -84,8 +84,6 @@ export default function HomeScreen() {
             <Text style={styles.historialPuntos}>+{item.puntos} pts</Text>
           </View>
         ))}
-
-        <View style={{ height: 24 }} />
       </ScrollView>
     </SafeAreaView>
     </MenuLateral>

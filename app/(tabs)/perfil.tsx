@@ -46,7 +46,6 @@ export default function PerfilScreen() {
     cargarDatos();
   }, []);
 
-  // Guardar donante y canjeadas cada vez que cambien
   useEffect(() => {
     if (!cargando) {
       AsyncStorage.setItem("@PulsoMX:donante", JSON.stringify(donante));
@@ -65,7 +64,6 @@ export default function PerfilScreen() {
       return;
     }
 
-    // Confirmar canje
     Alert.alert(
       "Canjear recompensa",
       `¿Canjear "${recompensa.nombre}" por ${recompensa.puntos} puntos?`,
@@ -90,7 +88,7 @@ export default function PerfilScreen() {
     );
   };
 
-  const progreso = donante.puntos / 1000; // para nivel Platino
+  const progreso = donante.puntos / 1000;
 
   if (cargando) return null;
 

@@ -10,20 +10,37 @@ import {
   Platform
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { loginStyles } from '../src/estilos/login.styles'; 
+import { useAuth } from '../src/contexts/AuthContext';
+import { loginStyles } from '../src/estilos/login.styles';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const { signIn } = useAuth(); // 👈 Importante
   const router = useRouter();
 
-  const handleLogin = () => {
-    if (email === '' || password === '') {
-      Alert.alert('Error', 'Por favor, llena todos los campos.');
+  // Login normal
+  const handleLogin = async () => {
+    if (!email.trim() || !password.trim()) {
+      Alert.alert('Error', 'Por favor llena todos los campos');
       return;
     }
-    Alert.alert('Iniciando sesión', `Correo: ${email}`);
-    // Cuando el login sea exitoso: router.replace('/');
+    const result = await signIn(email, password);
+    if (result.success) {
+      router.replace('/(tabs)');
+    } else {
+      Alert.alert('Error', result.message || 'Credenciales incorrectas');
+    }
+  };
+
+  // Login rápido para pruebas (demo)
+  const handleAutoLogin = async () => {
+    const result = await signIn('carlos@donavida.com', '123456');
+    if (result.success) {
+      router.replace('/(tabs)');
+    } else {
+      Alert.alert('Error', 'No se pudo iniciar sesión con el demo');
+    }
   };
 
   const handleRegister = () => {
@@ -62,6 +79,14 @@ export default function LoginScreen() {
 
         <TouchableOpacity style={loginStyles.loginButton} onPress={handleLogin}>
           <Text style={loginStyles.loginButtonText}>Iniciar Sesión</Text>
+        </TouchableOpacity>
+
+        {/* Botón demo usando los mismos estilos del registro */}
+        <TouchableOpacity
+          style={loginStyles.registerButton}
+          onPress={handleAutoLogin}
+        >
+          <Text style={loginStyles.registerButtonText}>🔓 Acceso rápido (demo)</Text>
         </TouchableOpacity>
 
         <View style={loginStyles.dividerContainer}>

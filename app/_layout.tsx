@@ -26,7 +26,7 @@ function RootLayoutNav() {
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <RootLayoutNav />
+      <Stack screenOptions={{ headerShown: false }} />
     </AuthProvider>
   );
 }

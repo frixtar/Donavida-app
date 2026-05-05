@@ -1,3 +1,38 @@
+// constants/mockData.ts
+export const donante = {
+  nombre: "Carlos Martínez",
+  tipo_sangre: "O+",
+  donaciones: 4,
+  puntos: 450,
+  proxima_donacion: "12 mayo 2025",
+  apto: true,
+  vidas_salvadas: 12,
+};
+
+export const historialDonaciones = [
+  {
+    id: "1",
+    fecha: "15/03/2026",
+    lugar: "Hospital General de Oaxaca",
+    cantidad: "500 ml",
+    tipo: "Sangre completa",
+  },
+  {
+    id: "2",
+    fecha: "10/12/2025",
+    lugar: "Cruz Roja",
+    cantidad: "450 ml",
+    tipo: "Glóbulos rojos",
+  },
+  {
+    id: "3",
+    fecha: "05/08/2025",
+    lugar: "Centro de Salud",
+    cantidad: "500 ml",
+    tipo: "Sangre completa",
+  },
+];
+
 export const historialMedico = {
   // Signos vitales
   signos_vitales: {
@@ -55,6 +90,57 @@ export const historialMedico = {
   ],
 };
 
+// Datos para la pantalla de mapa
+export const hospitales = [
+  {
+    id: "1",
+    nombre: "Hospital General de Oaxaca",
+    direccion: "Calzada de la República 100, Centro",
+    distancia: "1.2 km",
+    urgencia: "critica",   // critica, necesita, suficiente
+    abierto: true,
+    tipo_sangre: "O-",
+  },
+  {
+    id: "2",
+    nombre: "Cruz Roja Oaxaca",
+    direccion: "Av. Independencia 200",
+    distancia: "2.5 km",
+    urgencia: "critica",
+    abierto: true,
+    tipo_sangre: "O+",
+  },
+  {
+    id: "3",
+    nombre: "Hospital Civil",
+    direccion: "Av. Universidad s/n",
+    distancia: "3.8 km",
+    urgencia: "necesita",
+    abierto: true,
+    tipo_sangre: "A-",
+  },
+  {
+    id: "4",
+    nombre: "Clínica IMSS",
+    direccion: "Blvd. Vasconcelos 500",
+    distancia: "4.0 km",
+    urgencia: "suficiente",
+    abierto: false,
+    tipo_sangre: "B+",
+  },
+];
+
+export const alertas = [
+  {
+    id: "1",
+    hospital: "Hospital General de Oaxaca",
+    tipo_sangre: "O-",
+    distancia: "1.2 km",
+    fecha: "Hace 30 min",
+    estado: "pendiente",
+  }
+
+];
 export const cuestionarioAptitud = [
   {
     id: "1",
