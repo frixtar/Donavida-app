@@ -1,0 +1,175 @@
+// app/estilos/bienvenida.styles.ts
+import { StyleSheet } from 'react-native';
+
+export const colors = {
+  primary: '#C0221A',       // Rojo principal
+  white: '#FFFFFF',
+  whiteTransparent: 'rgba(255,255,255,0.1)',
+  whiteLight: 'rgba(255,255,255,0.15)',
+  whiteMedium: 'rgba(255,255,255,0.25)',
+  whiteText: 'rgba(255,255,255,0.85)',
+  whiteTextSoft: 'rgba(255,255,255,0.9)',
+};
+
+export const bienvenidaStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.primary,
+  },
+  content: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 24,
+    paddingTop: 32,
+  },
+  logoContainer: {
+    marginBottom: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  circulo3: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: colors.whiteTransparent,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  circulo2: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    backgroundColor: colors.whiteLight,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  circulo1: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: colors.whiteMedium,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cruz: {
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cruzH: {
+    position: 'absolute',
+    width: 32,
+    height: 8,
+    backgroundColor: colors.white,
+    borderRadius: 2,
+  },
+  cruzV: {
+    position: 'absolute',
+    width: 8,
+    height: 32,
+    backgroundColor: colors.white,
+    borderRadius: 2,
+  },
+  titulo: {
+    color: colors.white,
+    fontSize: 26,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  subtitulo: {
+    color: colors.whiteText,
+    fontSize: 14,
+    textAlign: 'center',
+    lineHeight: 22,
+    marginBottom: 28,
+  },
+  statsRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 24,
+    width: '100%',
+  },
+  statBox: {
+    flex: 1,
+    backgroundColor: colors.whiteLight,
+    borderRadius: 12,
+    padding: 14,
+    alignItems: 'center',
+  },
+  statNum: {
+    color: colors.white,
+    fontSize: 24,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  statLabel: {
+    color: colors.whiteText,
+    fontSize: 10,
+    textAlign: 'center',
+    lineHeight: 14,
+  },
+  pasosCard: {
+    backgroundColor: colors.whiteLight,
+    borderRadius: 14,
+    padding: 16,
+    width: '100%',
+    marginBottom: 24,
+  },
+  pasosTitulo: {
+    color: colors.white,
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 12,
+  },
+  pasoItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 10,
+  },
+  pasoNum: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: colors.whiteMedium,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pasoNumTexto: {
+    color: colors.white,
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  pasoTexto: {
+    color: colors.whiteTextSoft,
+    fontSize: 13,
+  },
+  btnPrimario: {
+    backgroundColor: colors.white,
+    width: '100%',
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  btnPrimarioTexto: {
+    color: colors.primary,
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  btnSecundario: {
+    width: '100%',
+    padding: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.4)',
+  },
+  btnSecundarioTexto: {
+    color: colors.whiteTextSoft,
+    fontSize: 14,
+    fontWeight: '500',
+  },
+});

@@ -18,7 +18,7 @@ export default function MapaScreen() {
         </View>
       </View>
 
-      {/* Mapa placeholder */}
+
       <View style={styles.mapaPlaceholder}>
         <Text style={styles.mapaTexto}>🗺️ Mapa</Text>
         <Text style={styles.mapaSubtexto}>
