@@ -1,95 +1,99 @@
-// contexts/AuthContext.tsx
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { router } from 'expo-router';
-
-type User = {
-  id: string;
-  name: string;
-  email: string;
-  // otros campos
-};
+import { supabase } from '../../services/supabase';
+import { Session, User } from '@supabase/supabase-js';
 
 type AuthContextData = {
   user: User | null;
+  session: Session | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
   signOut: () => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<{ success: boolean; message?: string }>;
+  register: (
+    nombre: string,
+    email: string,
+    password: string,
+    tipo_sangre: string,
+    telefono: string,
+    fecha_nacimiento: string,
+    genero: string
+  ) => Promise<{ success: boolean; message?: string }>;
 };
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadStoredData();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    return () => {
+      listener?.subscription.unsubscribe();
+    };
   }, []);
 
-  async function loadStoredData() {
+  const signIn = async (email: string, password: string) => {
     try {
-      const storedUser = await AsyncStorage.getItem('@PulsoMX:user');
-      const storedToken = await AsyncStorage.getItem('@PulsoMX:token');
-      if (storedUser && storedToken) {
-        setUser(JSON.parse(storedUser));
-        // Configurar token en axios si lo usas
-        // api.defaults.headers.Authorization = `Bearer ${storedToken}`;
-      }
-    } catch (error) {
-      console.log('Error loading auth data', error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function signIn(email: string, password: string) {
-    try {
-      // 🔁 Reemplazar con tu API real
-      const response = await fetch('https://tu-api.com/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Error en login');
-
-      const { user: userData, token } = data;
-      await AsyncStorage.setItem('@PulsoMX:user', JSON.stringify(userData));
-      await AsyncStorage.setItem('@PulsoMX:token', token);
-      setUser(userData);
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
       return { success: true };
     } catch (error: any) {
       return { success: false, message: error.message };
     }
-  }
+  };
 
-  async function register(name: string, email: string, password: string) {
+  const register = async (
+    nombre: string,
+    email: string,
+    password: string,
+    tipo_sangre: string,
+    telefono: string,
+    fecha_nacimiento: string,
+    genero: string
+  ) => {
     try {
-      const response = await fetch('https://tu-api.com/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            nombre,
+            tipo_sangre,
+            telefono,
+            fecha_nacimiento,
+            genero,
+            puntos: 0,
+            donaciones: 0,
+          },
+        },
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Error en registro');
-      // Opcional: auto-login después de registro
+      if (error) throw error;
       return { success: true };
     } catch (error: any) {
       return { success: false, message: error.message };
     }
-  }
+  };
 
-  async function signOut() {
-    await AsyncStorage.removeItem('@PulsoMX:user');
-    await AsyncStorage.removeItem('@PulsoMX:token');
+  const signOut = async () => {
+    await supabase.auth.signOut();
     setUser(null);
-    router.replace('/onboarding');
-  }
+    setSession(null);
+  };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signOut, register }}>
+    <AuthContext.Provider value={{ user, session, loading, signIn, register, signOut }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,3 +1,4 @@
+// components/MenuLateral.tsx
 import React, { useRef, useState } from "react";
 import {
   View,
@@ -8,6 +9,8 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
 } from "react-native";
+import { useRouter, usePathname } from "expo-router";
+import { useAuth } from "../src/contexts/AuthContext";
 
 const { width } = Dimensions.get("window");
 const MENU_WIDTH = 280;
@@ -20,6 +23,9 @@ export default function MenuLateral({ children }: Props) {
   const [abierto, setAbierto] = useState(false);
   const translateX = useRef(new Animated.Value(-MENU_WIDTH)).current;
   const opacity = useRef(new Animated.Value(0)).current;
+  const router = useRouter();
+  const pathname = usePathname();
+  const { user, signOut } = useAuth();
 
   const abrir = () => {
     setAbierto(true);
@@ -52,23 +58,30 @@ export default function MenuLateral({ children }: Props) {
     ]).start(() => setAbierto(false));
   };
 
+  const navegar = (ruta: string) => {
+    cerrar();
+    router.push(ruta);
+  };
+
   const items = [
-    { icon: "🏠", label: "Inicio" },
-    { icon: "🗺️", label: "Mapa" },
-    { icon: "🔔", label: "Alertas" },
-    { icon: "👤", label: "Perfil" },
-    { icon: "📅", label: "Agendar cita" },
-    { icon: "📱", label: "Mi QR" },
-    { icon: "🏆", label: "Recompensas" },
-    { icon: "⚙️", label: "Configuración" },
-    { icon: "🚪", label: "Cerrar sesión" },
+    { icon: "🏠", label: "Inicio", ruta: "/(tabs)" },
+    { icon: "🗺️", label: "Mapa", ruta: "/(tabs)/mapa" },
+    { icon: "🔔", label: "Alertas", ruta: "/(tabs)/alertas" },
+    { icon: "👤", label: "Perfil", ruta: "/(tabs)/perfil" },
+    { icon: "📅", label: "Agendar cita", ruta: "/cita" },
+    { icon: "🏆", label: "Recompensas", ruta: "/(tabs)/perfil" }, // misma que perfil
+    { icon: "📚", label: "Historial", ruta: "/(tabs)/e_historial" },
   ];
+
+  const handleCerrarSesion = async () => {
+    cerrar();
+    await signOut();
+    router.replace("/onboarding");
+  };
 
   return (
     <View style={{ flex: 1 }}>
-      {/* Contenido principal */}
       <View style={{ flex: 1 }}>
-        {/* Header con botón de menú */}
         <View style={styles.header}>
           <TouchableOpacity onPress={abrir} style={styles.menuBtn}>
             <View style={styles.menuLine} />
@@ -76,9 +89,6 @@ export default function MenuLateral({ children }: Props) {
             <View style={styles.menuLine} />
           </TouchableOpacity>
           <Text style={styles.headerTitulo}>DonaVida</Text>
-          <View style={styles.tipoChip}>
-            <Text style={styles.tipoText}>O−</Text>
-          </View>
         </View>
         {children}
       </View>
@@ -91,33 +101,50 @@ export default function MenuLateral({ children }: Props) {
       )}
 
       {/* Menú lateral */}
-      <Animated.View
-        style={[styles.menu, { transform: [{ translateX }] }]}
-      >
-        {/* Header del menú */}
+      <Animated.View style={[styles.menu, { transform: [{ translateX }] }]}>
         <View style={styles.menuHeader}>
           <View style={styles.avatar}>
-            <Text style={styles.avatarText}>CM</Text>
+            <Text style={styles.avatarText}>
+              const { user } = useAuth();
+            </Text>
           </View>
-          <Text style={styles.menuNombre}>Zaid Mendoza</Text>
+          <Text style={styles.menuNombre}>{user?.nombre || "Usuario"}</Text>
           <View style={styles.menuTipoChip}>
-            <Text style={styles.menuTipoText}>O− · Donante universal</Text>
+            <Text style={styles.menuTipoText}>
+             const { user } = useAuth();
+const nombre = user?.user_metadata?.nombre || 'Usuario';
+const tipo_sangre = user?.user_metadata?.tipo_sangre || 'O+';
+            </Text>
           </View>
         </View>
 
-        {/* Items */}
         {items.map((item, i) => (
           <TouchableOpacity
             key={i}
-            style={styles.menuItem}
-            onPress={cerrar}
+            style={[
+              styles.menuItem,
+              pathname === item.ruta && styles.menuItemActivo,
+            ]}
+            onPress={() => navegar(item.ruta)}
           >
             <Text style={styles.menuItemIcon}>{item.icon}</Text>
-            <Text style={styles.menuItemLabel}>{item.label}</Text>
+            <Text
+              style={[
+                styles.menuItemLabel,
+                pathname === item.ruta && styles.menuItemLabelActivo,
+              ]}
+            >
+              {item.label}
+            </Text>
           </TouchableOpacity>
         ))}
 
-        {/* Footer */}
+        {/* Cerrar sesión */}
+        <TouchableOpacity style={styles.menuItem} onPress={handleCerrarSesion}>
+          <Text style={styles.menuItemIcon}>🚪</Text>
+          <Text style={styles.menuItemLabel}>Cerrar sesión</Text>
+        </TouchableOpacity>
+
         <View style={styles.menuFooter}>
           <Text style={styles.footerText}>DonaVida v1.0.0</Text>
           <Text style={styles.footerSub}>Dona sangre, salva vidas</Text>
@@ -159,12 +186,17 @@ const styles = StyleSheet.create({
   tipoText: { color: "white", fontSize: 12, fontWeight: "600" },
   overlay: {
     position: "absolute",
-    top: 0, left: 0, right: 0, bottom: 0,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     backgroundColor: "black",
   },
   menu: {
     position: "absolute",
-    top: 0, left: 0, bottom: 0,
+    top: 0,
+    left: 0,
+    bottom: 0,
     width: MENU_WIDTH,
     backgroundColor: "white",
     elevation: 10,
@@ -207,15 +239,24 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: "#e8e6df",
   },
+  menuItemActivo: {
+    backgroundColor: "#fce4e4",
+  },
   menuItemIcon: { fontSize: 18 },
   menuItemLabel: {
     fontSize: 14,
     color: "#2c2c2a",
     fontWeight: "500",
   },
+  menuItemLabelActivo: {
+    color: "#C0221A",
+    fontWeight: "bold",
+  },
   menuFooter: {
     position: "absolute",
-    bottom: 0, left: 0, right: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
     padding: 20,
     borderTopWidth: 0.5,
     borderTopColor: "#e8e6df",

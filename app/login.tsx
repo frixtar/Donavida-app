@@ -10,30 +10,28 @@ import {
   Platform
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useAuth } from '../src/contexts/AuthContext';
+import { useAuth } from '../src/contexts/AuthContext';   // 👈 solo una vez
 import { loginStyles } from '../src/estilos/login.styles';
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const { signIn } = useAuth(); // 👈 Importante
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { signIn } = useAuth();
   const router = useRouter();
 
-  // Login normal
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
-      Alert.alert('Error', 'Por favor llena todos los campos');
+      Alert.alert('Error', 'Llena todos los campos');
       return;
     }
     const result = await signIn(email, password);
     if (result.success) {
       router.replace('/(tabs)');
     } else {
-      Alert.alert('Error', result.message || 'Credenciales incorrectas');
+      Alert.alert('Error', result.message);
     }
   };
 
-  // Login rápido para pruebas (demo)
   const handleAutoLogin = async () => {
     const result = await signIn('carlos@donavida.com', '123456');
     if (result.success) {
@@ -79,14 +77,6 @@ export default function LoginScreen() {
 
         <TouchableOpacity style={loginStyles.loginButton} onPress={handleLogin}>
           <Text style={loginStyles.loginButtonText}>Iniciar Sesión</Text>
-        </TouchableOpacity>
-
-        {/* Botón demo usando los mismos estilos del registro */}
-        <TouchableOpacity
-          style={loginStyles.registerButton}
-          onPress={handleAutoLogin}
-        >
-          <Text style={loginStyles.registerButtonText}>🔓 Acceso rápido (demo)</Text>
         </TouchableOpacity>
 
         <View style={loginStyles.dividerContainer}>

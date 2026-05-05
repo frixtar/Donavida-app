@@ -5,7 +5,6 @@ import MenuLateral from "../../components/MenuLateral";
 
 export default function HomeScreen() {
   return (
-    <MenuLateral>
       <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#C0221A" />
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -86,7 +85,6 @@ export default function HomeScreen() {
         ))}
       </ScrollView>
     </SafeAreaView>
-    </MenuLateral>
   );
 }
 
