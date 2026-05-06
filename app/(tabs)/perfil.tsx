@@ -9,6 +9,9 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
+import { useAuth } from "../../src/contexts/AuthContext";
+import { perfilStyles as styles } from "../../src/estilos/perfil.style";
 
 
 const RECOMPENSAS_DISPONIBLES = [
@@ -18,7 +21,10 @@ const RECOMPENSAS_DISPONIBLES = [
 ];
 
 export default function PerfilScreen() {
-  const [donante, setDonante] = useState(DONANTE_INICIAL);
+const router = useRouter();
+  const { user } = useAuth();
+  const nombre = user?.user_metadata?.nombre || "Donante";
+  const [donante, setDonante] = useState(nombre);
   const [recompensas, setRecompensas] = useState(RECOMPENSAS_DISPONIBLES);
   const [recompensasCanjeadas, setRecompensasCanjeadas] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -198,133 +204,3 @@ export default function PerfilScreen() {
     </SafeAreaView>
   );
 }
-
-// Estilos (igual que los originales, solo añado algunos)
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f5f5f3" },
-  header: {
-    backgroundColor: "#C0221A",
-    alignItems: "center",
-    padding: 24,
-    paddingBottom: 32,
-  },
-  avatar: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: "rgba(255,255,255,0.25)",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 10,
-  },
-  avatarText: { color: "white", fontSize: 22, fontWeight: "700" },
-  nombre: { color: "white", fontSize: 18, fontWeight: "600" },
-  subtitulo: { color: "rgba(255,255,255,0.8)", fontSize: 12, marginTop: 4 },
-  badgesRow: {
-    flexDirection: "row",
-    marginHorizontal: 16,
-    marginTop: -16,
-    gap: 8,
-    zIndex: 1,
-  },
-  badge: {
-    flex: 1,
-    backgroundColor: "white",
-    borderRadius: 12,
-    padding: 10,
-    alignItems: "center",
-    borderWidth: 0.5,
-    borderColor: "#e8e6df",
-  },
-  badgeNum: { fontSize: 16, fontWeight: "700", color: "#2c2c2a" },
-  badgeLabel: { fontSize: 10, color: "#888780", marginTop: 2 },
-  puntosCard: {
-    backgroundColor: "#C0221A",
-    margin: 16,
-    borderRadius: 12,
-    padding: 16,
-  },
-  puntosLabel: { color: "rgba(255,255,255,0.8)", fontSize: 11 },
-  puntosNum: { color: "white", fontSize: 26, fontWeight: "700", marginVertical: 6 },
-  barBg: {
-    height: 5,
-    backgroundColor: "rgba(255,255,255,0.3)",
-    borderRadius: 3,
-    marginBottom: 6,
-  },
-  barFill: { height: "100%", backgroundColor: "white", borderRadius: 3 },
-  puntosNext: { color: "rgba(255,255,255,0.7)", fontSize: 11 },
-  seccionTitulo: {
-    fontSize: 13,
-    fontWeight: "600",
-    color: "#2c2c2a",
-    marginHorizontal: 16,
-    marginTop: 8,
-    marginBottom: 8,
-  },
-  recompensaItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
-    marginHorizontal: 16,
-    marginBottom: 8,
-    borderRadius: 10,
-    padding: 12,
-    borderWidth: 0.5,
-    borderColor: "#e8e6df",
-    gap: 10,
-  },
-  recompensaItemCanjeada: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#f0f0ec",
-    marginHorizontal: 16,
-    marginBottom: 8,
-    borderRadius: 10,
-    padding: 12,
-    borderWidth: 0.5,
-    borderColor: "#e8e6df",
-    gap: 10,
-  },
-  recompensaIcono: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    backgroundColor: "#f1efe8",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  recompensaNombre: { fontSize: 12, fontWeight: "500", color: "#2c2c2a" },
-  recompensaPuntos: { fontSize: 11, color: "#888780", marginTop: 2 },
-  fechaCanje: { fontSize: 10, color: "#888780", marginTop: 2 },
-  btnCanjear: {
-    backgroundColor: "#C0221A",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 8,
-  },
-  btnCanjearText: { color: "white", fontSize: 11, fontWeight: "500" },
-  textoVacio: {
-    textAlign: "center",
-    color: "#888780",
-    marginVertical: 12,
-    marginHorizontal: 16,
-  },
-  infoSection: {
-    marginHorizontal: 16,
-    backgroundColor: "white",
-    borderRadius: 12,
-    borderWidth: 0.5,
-    borderColor: "#e8e6df",
-    overflow: "hidden",
-  },
-  infoRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 12,
-    borderBottomWidth: 0.5,
-    borderBottomColor: "#e8e6df",
-  },
-  infoKey: { fontSize: 12, color: "#888780" },
-  infoVal: { fontSize: 12, fontWeight: "500", color: "#2c2c2a" },
-});
