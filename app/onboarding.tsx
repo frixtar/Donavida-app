@@ -20,7 +20,7 @@ const slides = [
     icon: '🩸',
     titulo: 'Dona sangre,\nsalva vidas',
     descripcion:
-      'Cada donación puede salvar hasta 3 vidas. Con PulsoMX conectamos donantes con hospitales que necesitan tu ayuda en tiempo real.',
+      'Cada donación puede salvar hasta 3 vidas. Con DonaVida conectamos donantes con hospitales que necesitan tu ayuda en tiempo real.',
     color: '#C0221A',
     colorClaro: '#FCEBEB',
   },

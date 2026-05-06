@@ -10,8 +10,9 @@ import {
   Platform
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useAuth } from '../src/contexts/AuthContext';   // 👈 solo una vez
+import { useAuth } from '../src/contexts/AuthContext'; 
 import { loginStyles } from '../src/estilos/login.styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -19,27 +20,24 @@ export default function LoginScreen() {
   const { signIn } = useAuth();
   const router = useRouter();
 
-  const handleLogin = async () => {
-    if (!email.trim() || !password.trim()) {
-      Alert.alert('Error', 'Llena todos los campos');
-      return;
-    }
-    const result = await signIn(email, password);
-    if (result.success) {
-      router.replace('/(tabs)');
+const handleLogin = async () => {
+  if (!email.trim() || !password.trim()) {
+    Alert.alert('Error', 'Llena todos los campos');
+    return;
+  }
+  const result = await signIn(email, password);
+  if (result.success) {
+    // Verifica si ya vio la bienvenida
+    const visto = await AsyncStorage.getItem('@donavida:bienvenida_vista');
+    if (visto === null) {
+      router.replace('/bienvenida');
     } else {
-      Alert.alert('Error', result.message);
-    }
-  };
-
-  const handleAutoLogin = async () => {
-    const result = await signIn('carlos@donavida.com', '123456');
-    if (result.success) {
       router.replace('/(tabs)');
-    } else {
-      Alert.alert('Error', 'No se pudo iniciar sesión con el demo');
     }
-  };
+  } else {
+    Alert.alert('Error', result.message);
+  }
+};
 
   const handleRegister = () => {
     router.push('/registro');

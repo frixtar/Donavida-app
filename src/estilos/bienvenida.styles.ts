@@ -1,20 +1,9 @@
-// app/estilos/bienvenida.styles.ts
 import { StyleSheet } from 'react-native';
-
-export const colors = {
-  primary: '#C0221A',       // Rojo principal
-  white: '#FFFFFF',
-  whiteTransparent: 'rgba(255,255,255,0.1)',
-  whiteLight: 'rgba(255,255,255,0.15)',
-  whiteMedium: 'rgba(255,255,255,0.25)',
-  whiteText: 'rgba(255,255,255,0.85)',
-  whiteTextSoft: 'rgba(255,255,255,0.9)',
-};
 
 export const bienvenidaStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.primary,
+    backgroundColor: '#C0221A',
   },
   content: {
     flex: 1,
@@ -31,7 +20,7 @@ export const bienvenidaStyles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: colors.whiteTransparent,
+    backgroundColor: 'rgba(255,255,255,0.1)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -39,7 +28,7 @@ export const bienvenidaStyles = StyleSheet.create({
     width: 90,
     height: 90,
     borderRadius: 45,
-    backgroundColor: colors.whiteLight,
+    backgroundColor: 'rgba(255,255,255,0.15)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -47,7 +36,7 @@ export const bienvenidaStyles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: colors.whiteMedium,
+    backgroundColor: 'rgba(255,255,255,0.25)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -61,25 +50,25 @@ export const bienvenidaStyles = StyleSheet.create({
     position: 'absolute',
     width: 32,
     height: 8,
-    backgroundColor: colors.white,
+    backgroundColor: 'white',
     borderRadius: 2,
   },
   cruzV: {
     position: 'absolute',
     width: 8,
     height: 32,
-    backgroundColor: colors.white,
+    backgroundColor: 'white',
     borderRadius: 2,
   },
   titulo: {
-    color: colors.white,
+    color: 'white',
     fontSize: 26,
     fontWeight: '700',
     textAlign: 'center',
     marginBottom: 10,
   },
   subtitulo: {
-    color: colors.whiteText,
+    color: 'rgba(255,255,255,0.85)',
     fontSize: 14,
     textAlign: 'center',
     lineHeight: 22,
@@ -93,32 +82,32 @@ export const bienvenidaStyles = StyleSheet.create({
   },
   statBox: {
     flex: 1,
-    backgroundColor: colors.whiteLight,
+    backgroundColor: 'rgba(255,255,255,0.15)',
     borderRadius: 12,
     padding: 14,
     alignItems: 'center',
   },
   statNum: {
-    color: colors.white,
+    color: 'white',
     fontSize: 24,
     fontWeight: '700',
     marginBottom: 4,
   },
   statLabel: {
-    color: colors.whiteText,
+    color: 'rgba(255,255,255,0.8)',
     fontSize: 10,
     textAlign: 'center',
     lineHeight: 14,
   },
   pasosCard: {
-    backgroundColor: colors.whiteLight,
+    backgroundColor: 'rgba(255,255,255,0.15)',
     borderRadius: 14,
     padding: 16,
     width: '100%',
     marginBottom: 24,
   },
   pasosTitulo: {
-    color: colors.white,
+    color: 'white',
     fontSize: 14,
     fontWeight: '600',
     marginBottom: 12,
@@ -133,21 +122,21 @@ export const bienvenidaStyles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: colors.whiteMedium,
+    backgroundColor: 'rgba(255,255,255,0.25)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   pasoNumTexto: {
-    color: colors.white,
+    color: 'white',
     fontSize: 12,
     fontWeight: '700',
   },
   pasoTexto: {
-    color: colors.whiteTextSoft,
+    color: 'rgba(255,255,255,0.9)',
     fontSize: 13,
   },
   btnPrimario: {
-    backgroundColor: colors.white,
+    backgroundColor: 'white',
     width: '100%',
     padding: 16,
     borderRadius: 12,
@@ -155,7 +144,7 @@ export const bienvenidaStyles = StyleSheet.create({
     marginBottom: 12,
   },
   btnPrimarioTexto: {
-    color: colors.primary,
+    color: '#C0221A',
     fontSize: 16,
     fontWeight: '700',
   },
@@ -168,7 +157,7 @@ export const bienvenidaStyles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.4)',
   },
   btnSecundarioTexto: {
-    color: colors.whiteTextSoft,
+    color: 'rgba(255,255,255,0.9)',
     fontSize: 14,
     fontWeight: '500',
   },

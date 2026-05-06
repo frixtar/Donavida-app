@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { alertas } from "../../constants/mockData";
+import { alertaActiva } from "../../constants/mockData";
 
 const estadoColor: Record<string, { bg: string; text: string; label: string }> = {
   pendiente: { bg: "#FCEBEB", text: "#A32D2D", label: "Pendiente" },
@@ -13,29 +13,29 @@ export default function AlertasScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.titulo}>Mis alertas</Text>
-        <Text style={styles.subtitulo}>{alertas.length} notificaciones</Text>
+        <Text style={styles.subtitulo}>{alertaActiva.length} notificaciones</Text>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {alertas.map((alerta) => {
-          const estado = estadoColor[alerta.estado];
+        {alertaActiva.map((alertaActiva) => {
+          const estado = estadoColor[alertaActiva.estado];
           return (
-            <TouchableOpacity key={alerta.id} style={styles.card}>
+            <TouchableOpacity key={alertaActiva.id} style={styles.card}>
               <View style={styles.cardHeader}>
                 <View style={[styles.badge, { backgroundColor: estado.bg }]}>
                   <Text style={[styles.badgeText, { color: estado.text }]}>
                     {estado.label}
                   </Text>
                 </View>
-                <Text style={styles.fecha}>{alerta.fecha}</Text>
+                <Text style={styles.fecha}>{alertaActiva.fecha}</Text>
               </View>
-              <Text style={styles.hospital}>{alerta.hospital}</Text>
+              <Text style={styles.hospital}>{alertaActiva.hospital}</Text>
               <View style={styles.cardFooter}>
                 <View style={styles.tipoChip}>
-                  <Text style={styles.tipoText}>{alerta.tipo_sangre}</Text>
+                  <Text style={styles.tipoText}>{alertaActiva.tipo_sangre}</Text>
                 </View>
-                <Text style={styles.distancia}>{alerta.distancia}</Text>
+                <Text style={styles.distancia}>{alertaActiva.distancia}</Text>
               </View>
-              {alerta.estado === "pendiente" && (
+              {alertaActiva.estado === "pendiente" && (
                 <View style={styles.botones}>
                   <TouchableOpacity style={styles.btnAceptar}>
                     <Text style={styles.btnAceptarText}>Voy a donar</Text>

@@ -103,20 +103,22 @@ export default function MenuLateral({ children }: Props) {
       {/* Menú lateral */}
       <Animated.View style={[styles.menu, { transform: [{ translateX }] }]}>
         <View style={styles.menuHeader}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>
-              const { user } = useAuth();
-            </Text>
-          </View>
-          <Text style={styles.menuNombre}>{user?.nombre || "Usuario"}</Text>
-          <View style={styles.menuTipoChip}>
-            <Text style={styles.menuTipoText}>
-             const { user } = useAuth();
-const nombre = user?.user_metadata?.nombre || 'Usuario';
-const tipo_sangre = user?.user_metadata?.tipo_sangre || 'O+';
-            </Text>
-          </View>
-        </View>
+  <View style={styles.avatar}>
+    <Text style={styles.avatarText}>
+      {user?.user_metadata?.nombre
+        ? user.user_metadata.nombre.charAt(0).toUpperCase()
+        : "U"}
+    </Text>
+  </View>
+  <Text style={styles.menuNombre}>
+    {user?.user_metadata?.nombre || "Usuario"}
+  </Text>
+  <View style={styles.menuTipoChip}>
+    <Text style={styles.menuTipoText}>
+      {user?.user_metadata?.tipo_sangre || "O+"} · Donante
+    </Text>
+  </View>
+</View>
 
         {items.map((item, i) => (
           <TouchableOpacity

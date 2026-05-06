@@ -1,37 +1,31 @@
 // constants/mockData.ts
-export const donante = {
-  nombre: "Carlos Martínez",
-  tipo_sangre: "O+",
-  donaciones: 4,
-  puntos: 450,
-  proxima_donacion: "12 mayo 2025",
-  apto: true,
-  vidas_salvadas: 12,
-};
-
 export const historialDonaciones = [
   {
     id: "1",
-    fecha: "15/03/2026",
-    lugar: "Hospital General de Oaxaca",
-    cantidad: "500 ml",
-    tipo: "Sangre completa",
+    hospital: "Hospital Civil de Oaxaca",
+    fecha: "12 Ene 2026",
+    puntos: 100,
   },
   {
     id: "2",
-    fecha: "10/12/2025",
-    lugar: "Cruz Roja",
-    cantidad: "450 ml",
-    tipo: "Glóbulos rojos",
+    hospital: "Cruz Roja Oaxaca",
+    fecha: "3 Oct 2025",
+    puntos: 150,
   },
   {
     id: "3",
-    fecha: "05/08/2025",
-    lugar: "Centro de Salud",
-    cantidad: "500 ml",
-    tipo: "Sangre completa",
+    hospital: "IMSS Oaxaca",
+    fecha: "20 Jul 2025",
+    puntos: 100,
   },
 ];
+
+export const alertaActiva = {
+  hospital: "Hospital Civil de Oaxaca",
+  tipo_sangre: "O-",
+  distancia: "1.2 km",
+  urgencia: "crítica",
+};
 
 export const historialMedico = {
   // Signos vitales
@@ -130,17 +124,6 @@ export const hospitales = [
   },
 ];
 
-export const alertas = [
-  {
-    id: "1",
-    hospital: "Hospital General de Oaxaca",
-    tipo_sangre: "O-",
-    distancia: "1.2 km",
-    fecha: "Hace 30 min",
-    estado: "pendiente",
-  }
-
-];
 export const cuestionarioAptitud = [
   {
     id: "1",

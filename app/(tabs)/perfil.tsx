@@ -10,13 +10,6 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const DONANTE_INICIAL = {
-  nombre: "Carlos Martínez",
-  tipo_sangre: "O+",
-  donaciones: 4,
-  puntos: 450,
-  proxima_donacion: "12 mayo 2025",
-};
 
 const RECOMPENSAS_DISPONIBLES = [
   { id: "1", nombre: "20% desc. Farmacias Similares", puntos: 500 },
