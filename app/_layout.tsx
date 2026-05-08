@@ -3,7 +3,7 @@ import { Stack } from 'expo-router';
 import { AuthProvider, useAuth } from '../src/contexts/AuthContext';
 
 function RootLayoutNav() {
-  const { user, loading } = useAuth();
+  const { user, loading, medicalOnboardingPassed } = useAuth();
 
   if (loading) return null;
 
@@ -17,10 +17,15 @@ function RootLayoutNav() {
         </>
       ) : (
         <>
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="bienvenida" />
-          <Stack.Screen name="cuestionario" />
-          <Stack.Screen name="analisis-clinico" />
+          {/* Si el onboarding médico aún no se ha completado, mostrar las pantallas del flujo */}
+          {!medicalOnboardingPassed ? (
+            <>
+              <Stack.Screen name="bienvenida" />
+              <Stack.Screen name="cuestionario" />
+            </>
+          ) : (
+            <Stack.Screen name="(tabs)" />
+          )}
         </>
       )}
     </Stack>

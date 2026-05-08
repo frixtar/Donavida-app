@@ -70,7 +70,7 @@ export default function MenuLateral({ children }: Props) {
     { icon: "👤", label: "Perfil", ruta: "/(tabs)/perfil" },
     { icon: "📅", label: "Agendar cita", ruta: "/cita" },
     { icon: "🏆", label: "Recompensas", ruta: "/(tabs)/perfil" }, // misma que perfil
-    { icon: "📚", label: "Historial", ruta: "/(tabs)/e_historial" },
+    { icon: "📚", label: "Historial", ruta: "/(tabs)/historial" },
   ];
 
   const handleCerrarSesion = async () => {

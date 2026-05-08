@@ -42,20 +42,21 @@ export default function RegistroScreen() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleRegister = async () => {
-    if (!validateForm()) return;
-    setLoading(true);
-    const result = await register(
-      nombre,
-      apellidoPaterno,
-      apellidoMaterno,
-      email,
-      password,
-      tipoSangre,
-      telefono,
-      new Date().toISOString().split('T')[0],
-      genero
-    );
+ const handleRegister = async () => {
+  if (!validateForm()) return;
+  const nombreCompleto = `${nombre} ${apellidoPaterno} ${apellidoMaterno}`;
+  const fechaNacimiento = new Date().toISOString().split('T')[0]; // o un campo del formulario
+
+  setLoading(true);
+  const result = await register(
+    nombreCompleto,
+    email,
+    password,
+    tipoSangre,
+    telefono,
+    fechaNacimiento,
+    genero
+  );
     setLoading(false);
     if (result.success) {
       Alert.alert(
@@ -170,7 +171,7 @@ export default function RegistroScreen() {
           <Text style={labelStyle}>Género</Text>
           <View style={{
             backgroundColor: 'white', borderRadius: 10,
-            borderWidth: 0.5, borderColor: '#e8e6df', marginBottom: 16,
+            borderWidth: 0.5, borderColor: '#b1e76b', marginBottom: 16,
           }}>
             <Picker
               selectedValue={genero}

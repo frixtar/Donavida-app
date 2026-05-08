@@ -7,10 +7,5 @@ const supabaseUrl = 'https://gcbulpeilvgqsiiblyam.supabase.co';
 const supabaseAnonKey = 'sb_publishable_AE57hKFIgJ51wPGRsTLTMg_jGn5PhmR';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    storage: AsyncStorage,
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: false,
-  },
+  auth: { storage: AsyncStorage, autoRefreshToken: true, persistSession: true }
 });
