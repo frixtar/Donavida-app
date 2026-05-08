@@ -10,6 +10,8 @@ type AuthContextData = {
   signOut: () => Promise<void>;
   register: (
     nombre: string,
+    apellidoPaterno: string,
+    apellidoMaterno: string,
     email: string,
     password: string,
     tipo_sangre: string,
@@ -55,36 +57,40 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const register = async (
-    nombre: string,
-    email: string,
-    password: string,
-    tipo_sangre: string,
-    telefono: string,
-    fecha_nacimiento: string,
-    genero: string
-  ) => {
-    try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            nombre,
-            tipo_sangre,
-            telefono,
-            fecha_nacimiento,
-            genero,
-            puntos: 0,
-            donaciones: 0,
-          },
+  nombre: string,
+  apellidoPaterno: string,
+  apellidoMaterno: string,
+  email: string,
+  password: string,
+  tipo_sangre: string,
+  telefono: string,
+  fecha_nacimiento: string,
+  genero: string
+) => {
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          nombre,
+          apellidoPaterno,
+          apellidoMaterno,
+          tipo_sangre,
+          telefono,
+          fecha_nacimiento,
+          genero,
+          puntos: 0,
+          donaciones: 0,
         },
-      });
-      if (error) throw error;
-      return { success: true };
-    } catch (error: any) {
-      return { success: false, message: error.message };
-    }
-  };
+      },
+    });
+    if (error) throw error;
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, message: error.message };
+  }
+};
 
   const signOut = async () => {
     await supabase.auth.signOut();

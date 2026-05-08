@@ -20,12 +20,26 @@ export const historialDonaciones = [
   },
 ];
 
-export const alertaActiva = {
-  hospital: "Hospital Civil de Oaxaca",
-  tipo_sangre: "O-",
-  distancia: "1.2 km",
-  urgencia: "crítica",
-};
+export const alerta = [
+  {
+    id: "1",
+    hospital: "Hospital Civil de Oaxaca",
+    tipo_sangre: "O-",
+    distancia: "1.2 km",
+    urgencia: "crítica",
+    estado: "pendiente",
+    fecha: "15 Mar 2026",
+  },
+  {
+    id: "2",
+    hospital: "Cruz Roja Oaxaca",
+    tipo_sangre: "O+",
+    distancia: "2.5 km",
+    urgencia: "crítica",
+    estado: "respondida",
+    fecha: "10 Mar 2026",
+  },
+];
 
 export const historialMedico = {
   // Signos vitales

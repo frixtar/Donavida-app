@@ -14,6 +14,8 @@ export default function RegistroScreen() {
   const router = useRouter();
 
   const [nombre, setNombre] = useState('');
+  const [apellidoPaterno, setApellidoPaterno] = useState('');
+  const [apellidoMaterno, setApellidoMaterno] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -27,6 +29,8 @@ export default function RegistroScreen() {
   const validateForm = () => {
     let newErrors: { [key: string]: string } = {};
     if (!nombre.trim()) newErrors.nombre = 'El nombre es obligatorio';
+    if (!apellidoPaterno.trim()) newErrors.apellidoPaterno = 'El apellido paterno es obligatorio';
+    if (!apellidoMaterno.trim()) newErrors.apellidoMaterno = 'El apellido materno es obligatorio';
     if (!email.trim()) newErrors.email = 'El correo es obligatorio';
     else if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = 'Correo inválido';
     if (!telefono.trim()) newErrors.telefono = 'El teléfono es obligatorio';
@@ -43,6 +47,8 @@ export default function RegistroScreen() {
     setLoading(true);
     const result = await register(
       nombre,
+      apellidoPaterno,
+      apellidoMaterno,
       email,
       password,
       tipoSangre,
@@ -68,8 +74,6 @@ export default function RegistroScreen() {
       style={{ flex: 1, backgroundColor: '#C0221A' }}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-
-        {/* Header */}
         <View style={{ padding: 24, paddingTop: 48, alignItems: 'center' }}>
           <Text style={{ color: 'white', fontSize: 32, fontWeight: '700' }}>DonaVida</Text>
           <Text style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14, marginTop: 4 }}>
@@ -77,7 +81,6 @@ export default function RegistroScreen() {
           </Text>
         </View>
 
-        {/* Formulario */}
         <View style={{
           flex: 1, backgroundColor: '#f5f5f3',
           borderTopLeftRadius: 28, borderTopRightRadius: 28,
@@ -88,15 +91,37 @@ export default function RegistroScreen() {
           </Text>
 
           {/* Nombre */}
-          <Text style={labelStyle}>Nombre completo</Text>
+          <Text style={labelStyle}>Nombre</Text>
           <TextInput
             style={[inputStyle, errors.nombre ? errorInputStyle : {}]}
-            placeholder="Ej. Carlos Mendoza"
-            placeholderTextColor="#d4b113"
+            placeholder="Ej. Carlos"
+            placeholderTextColor="#b4b2a9"
             value={nombre}
             onChangeText={setNombre}
           />
           {errors.nombre ? <Text style={errorTextStyle}>{errors.nombre}</Text> : null}
+
+          {/* Apellido Paterno */}
+          <Text style={labelStyle}>Apellido paterno</Text>
+          <TextInput
+            style={[inputStyle, errors.apellidoPaterno ? errorInputStyle : {}]}
+            placeholder="Ej. Mendoza"
+            placeholderTextColor="#b4b2a9"
+            value={apellidoPaterno}
+            onChangeText={setApellidoPaterno}
+          />
+          {errors.apellidoPaterno ? <Text style={errorTextStyle}>{errors.apellidoPaterno}</Text> : null}
+
+          {/* Apellido Materno */}
+          <Text style={labelStyle}>Apellido materno</Text>
+          <TextInput
+            style={[inputStyle, errors.apellidoMaterno ? errorInputStyle : {}]}
+            placeholder="Ej. López"
+            placeholderTextColor="#b4b2a9"
+            value={apellidoMaterno}
+            onChangeText={setApellidoMaterno}
+          />
+          {errors.apellidoMaterno ? <Text style={errorTextStyle}>{errors.apellidoMaterno}</Text> : null}
 
           {/* Email */}
           <Text style={labelStyle}>Correo electrónico</Text>
@@ -205,7 +230,7 @@ export default function RegistroScreen() {
           </TouchableOpacity>
           {errors.terminos ? <Text style={errorTextStyle}>{errors.terminos}</Text> : null}
 
-          {/* Botón */}
+          {/* Botón registro */}
           <TouchableOpacity
             style={{
               backgroundColor: loading ? '#e8a0a0' : '#C0221A',
@@ -220,7 +245,7 @@ export default function RegistroScreen() {
             </Text>
           </TouchableOpacity>
 
-          {/* Link login */}
+          {/* Link a login */}
           <TouchableOpacity
             style={{ alignItems: 'center', padding: 8 }}
             onPress={() => router.push('/login')}

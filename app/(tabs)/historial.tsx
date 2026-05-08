@@ -27,7 +27,8 @@ export default function HistorialScreen() {
       <View style={styles.header}>
         <Text style={styles.titulo}>Mi historial médico</Text>
         <Text style={styles.subtitulo}>
-          Última actualización: {historialMedico.signos_vitales.ultima_actualizacion}
+          Última actualización:{" "}
+          {historialMedico.signos_vitales.ultima_actualizacion}
         </Text>
       </View>
 
@@ -102,9 +103,7 @@ export default function HistorialScreen() {
             <View style={styles.aptitudCard}>
               <Text style={styles.aptitudIcono}>✓</Text>
               <View style={{ flex: 1 }}>
-                <Text style={styles.aptitudTitulo}>
-                  Apto para donar
-                </Text>
+                <Text style={styles.aptitudTitulo}>Apto para donar</Text>
                 <Text style={styles.aptitudSub}>
                   Todos tus signos vitales están dentro del rango normal
                 </Text>
@@ -119,15 +118,19 @@ export default function HistorialScreen() {
             <Text style={styles.seccionTitulo}>Enfermedades crónicas</Text>
             {historialMedico.enfermedades.map((e) => (
               <View key={e.id} style={styles.itemCard}>
-                <View style={[
-                  styles.itemDot,
-                  { backgroundColor: e.activa ? "#C0221A" : "#639922" }
-                ]} />
+                <View
+                  style={[
+                    styles.itemDot,
+                    { backgroundColor: e.activa ? "#C0221A" : "#639922" },
+                  ]}
+                />
                 <Text style={styles.itemNombre}>{e.nombre}</Text>
-                <Text style={[
-                  styles.itemEstado,
-                  { color: e.activa ? "#C0221A" : "#639922" }
-                ]}>
+                <Text
+                  style={[
+                    styles.itemEstado,
+                    { color: e.activa ? "#C0221A" : "#639922" },
+                  ]}
+                >
                   {e.activa ? "Activa" : "Sin condiciones"}
                 </Text>
               </View>
@@ -138,12 +141,12 @@ export default function HistorialScreen() {
             </Text>
             {historialMedico.alergias.map((a) => (
               <View key={a.id} style={styles.itemCard}>
-                <View style={[styles.itemDot, { backgroundColor: "#BA7517" }]} />
+                <View
+                  style={[styles.itemDot, { backgroundColor: "#BA7517" }]}
+                />
                 <View style={{ flex: 1 }}>
                   <Text style={styles.itemNombre}>{a.nombre}</Text>
-                  <Text style={styles.itemMeta}>
-                    Severidad: {a.severidad}
-                  </Text>
+                  <Text style={styles.itemMeta}>Severidad: {a.severidad}</Text>
                 </View>
                 <View style={styles.alergiaChip}>
                   <Text style={styles.alergiaChipText}>{a.severidad}</Text>
@@ -152,7 +155,9 @@ export default function HistorialScreen() {
             ))}
 
             <TouchableOpacity style={styles.btnAgregar}>
-              <Text style={styles.btnAgregarText}>+ Agregar condición o alergia</Text>
+              <Text style={styles.btnAgregarText}>
+                + Agregar condición o alergia
+              </Text>
             </TouchableOpacity>
           </View>
         )}
@@ -183,8 +188,9 @@ export default function HistorialScreen() {
             <View style={styles.avisoCard}>
               <Text style={styles.avisoIcono}>⚠️</Text>
               <Text style={styles.avisoTexto}>
-                Algunos medicamentos pueden afectar tu aptitud para donar.
-                El médico del hospital verificará tu caso al momento de la donación.
+                Algunos medicamentos pueden afectar tu aptitud para donar. El
+                médico del hospital verificará tu caso al momento de la
+                donación.
               </Text>
             </View>
           </View>
@@ -211,7 +217,9 @@ export default function HistorialScreen() {
             </Text>
             {historialMedico.transfusiones.map((t) => (
               <View key={t.id} style={styles.cirugiaCard}>
-                <View style={[styles.cirugiaFecha, { backgroundColor: "#E6F1FB" }]}>
+                <View
+                  style={[styles.cirugiaFecha, { backgroundColor: "#E6F1FB" }]}
+                >
                   <Text style={[styles.cirugiaFechaText, { color: "#185FA5" }]}>
                     {t.fecha}
                   </Text>
