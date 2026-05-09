@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import MapView, { Marker, PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
+import * as Location from 'expo-location';
 import { supabase } from '../../services/supabase';
 import { useAuth } from '../../src/contexts/AuthContext';
+
+const { width, height } = Dimensions.get('window');
 
 const urgenciaConfig: Record<string, { bg: string; text: string; label: string }> = {
   critica: { bg: "#FCEBEB", text: "#A32D2D", label: "Urgente" },
@@ -16,11 +20,17 @@ export default function MapaScreen() {
   const [cargando, setCargando] = useState(true);
   const [sinUbicacion, setSinUbicacion] = useState(false);
   const [ubicacionUsuario, setUbicacionUsuario] = useState<{ lat: number; lng: number } | null>(null);
+  const [region, setRegion] = useState({
+    latitude: 19.4326,
+    longitude: -99.1332,
+    latitudeDelta: 0.05,
+    longitudeDelta: 0.05,
+  });
+  const mapRef = useRef<MapView>(null);
 
   useEffect(() => {
     const cargarHospitales = async () => {
       if (!user) return;
-      // Obtener la ubicación guardada del perfil
       const { data: perfil, error } = await supabase
         .from('profiles')
         .select('latitud, longitud')
@@ -34,12 +44,17 @@ export default function MapaScreen() {
       }
 
       setUbicacionUsuario({ lat: perfil.latitud, lng: perfil.longitud });
+      setRegion({
+        latitude: perfil.latitud,
+        longitude: perfil.longitud,
+        latitudeDelta: 0.05,
+        longitudeDelta: 0.05,
+      });
 
-      // Llamar a la función de Supabase
       const { data, error: rpcError } = await supabase.rpc('hospitales_cercanos', {
         lat_user: perfil.latitud,
         lon_user: perfil.longitud,
-        radio_km: 10, // 10 km de radio
+        radio_km: 10,
       });
 
       if (!rpcError && data) {
@@ -91,14 +106,39 @@ export default function MapaScreen() {
         )}
       </View>
 
-      <View style={styles.mapaPlaceholder}>
-        <Text style={styles.mapaTexto}>🗺️ Mapa</Text>
-        <Text style={styles.mapaSubtexto}>
-          Integración con react-native-maps próximamente
-        </Text>
-      </View>
+      <MapView
+        ref={mapRef}
+        style={styles.map}
+        provider={PROVIDER_GOOGLE}
+        initialRegion={region}
+        showsUserLocation={true}
+        showsMyLocationButton={true}
+      >
+        {hospitalesCercanos.map((hospital) => (
+          <Marker
+            key={hospital.id}
+            coordinate={{
+              latitude: hospital.latitud,
+              longitude: hospital.longitud,
+            }}
+            title={hospital.nombre}
+            description={`${hospital.distancia_km?.toFixed(1)} km - ${urgenciaConfig[hospital.urgencia]?.label || 'Suficiente'}`}
+            pinColor={urgenciaConfig[hospital.urgencia]?.text === "#A32D2D" ? "red" : urgenciaConfig[hospital.urgencia]?.text === "#854F0B" ? "orange" : "green"}
+          />
+        ))}
+        {ubicacionUsuario && (
+          <Marker
+            coordinate={{
+              latitude: ubicacionUsuario.lat,
+              longitude: ubicacionUsuario.lng,
+            }}
+            title="Tu ubicación"
+            pinColor="blue"
+          />
+        )}
+      </MapView>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.listaContainer} showsVerticalScrollIndicator={false}>
         <Text style={styles.seccionTitulo}>Hospitales a menos de 10 km</Text>
         {hospitalesCercanos.length === 0 ? (
           <Text style={styles.sinResultados}>No hay hospitales en esta zona</Text>
@@ -151,10 +191,15 @@ const styles = StyleSheet.create({
   titulo: { color: "white", fontSize: 20, fontWeight: "600" },
   filtro: { borderWidth: 0.5, borderColor: "rgba(255,255,255,0.5)", paddingHorizontal: 12, paddingVertical: 4, borderRadius: 20 },
   filtroText: { color: "white", fontSize: 11 },
-  mapaPlaceholder: { height: 180, backgroundColor: "#e8e6df", alignItems: "center", justifyContent: "center" },
-  mapaTexto: { fontSize: 32, marginBottom: 8 },
-  mapaSubtexto: { fontSize: 12, color: "#888780" },
-  seccionTitulo: { fontSize: 13, fontWeight: "600", color: "#2c2c2a", marginHorizontal: 16, marginBottom: 8 },
+  map: {
+    width: '100%',
+    height: height * 0.4,
+  },
+  listaContainer: {
+    flex: 1,
+    marginTop: 8,
+  },
+  seccionTitulo: { fontSize: 13, fontWeight: "600", color: "#2c2c2a", marginHorizontal: 16, marginVertical: 8 },
   sinResultados: { textAlign: 'center', marginTop: 20, color: '#888' },
   hospitalCard: {
     flexDirection: "row",
