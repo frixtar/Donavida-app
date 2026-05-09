@@ -45,17 +45,16 @@ export default function RegistroScreen() {
  const handleRegister = async () => {
   if (!validateForm()) return;
   const nombreCompleto = `${nombre} ${apellidoPaterno} ${apellidoMaterno}`;
-  const fechaNacimiento = new Date().toISOString().split('T')[0]; // o un campo del formulario
 
   setLoading(true);
   const result = await register(
-    nombreCompleto,
+    nombreCompleto,  // nombre completo
     email,
     password,
     tipoSangre,
     telefono,
-    fechaNacimiento,
     genero
+    // fechaNacimiento eliminado
   );
     setLoading(false);
     if (result.success) {
@@ -65,7 +64,7 @@ export default function RegistroScreen() {
         [{ text: 'OK', onPress: () => router.replace('/login') }]
       );
     } else {
-      Alert.alert('Error', result.message);
+      Alert.alert('Hubo un error, favor de intentarlo de nuevo', result.message);
     }
   };
 

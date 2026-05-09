@@ -66,10 +66,9 @@ export default function MenuLateral({ children }: Props) {
   const items = [
     { icon: "🏠", label: "Inicio", ruta: "/(tabs)" },
     { icon: "🗺️", label: "Mapa", ruta: "/(tabs)/mapa" },
+    { icon: "📋", label: "Análisis Clínico", ruta: "/(tabs)/analisis-clinico" },
     { icon: "🔔", label: "Alertas", ruta: "/(tabs)/alertas" },
     { icon: "👤", label: "Perfil", ruta: "/(tabs)/perfil" },
-    { icon: "📅", label: "Agendar cita", ruta: "/cita" },
-    { icon: "🏆", label: "Recompensas", ruta: "/(tabs)/perfil" }, // misma que perfil
     { icon: "📚", label: "Historial", ruta: "/(tabs)/historial" },
   ];
 

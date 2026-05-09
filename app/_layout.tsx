@@ -1,4 +1,3 @@
-// app/_layout.tsx
 import { Stack } from 'expo-router';
 import { AuthProvider, useAuth } from '../src/contexts/AuthContext';
 
@@ -10,23 +9,22 @@ function RootLayoutNav() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       {!user ? (
+        // Pantallas de autenticación (sin redirigir)
         <>
           <Stack.Screen name="onboarding" />
           <Stack.Screen name="login" />
           <Stack.Screen name="registro" />
         </>
-      ) : (
+      ) : !medicalOnboardingPassed ? (
+        // Flujo de onboarding médico
         <>
-          {/* Si el onboarding médico aún no se ha completado, mostrar las pantallas del flujo */}
-          {!medicalOnboardingPassed ? (
-            <>
-              <Stack.Screen name="bienvenida" />
-              <Stack.Screen name="cuestionario" />
-            </>
-          ) : (
-            <Stack.Screen name="(tabs)" />
-          )}
+          <Stack.Screen name="bienvenida" />
+          <Stack.Screen name="cuestionario" />
+          <Stack.Screen name="analisis-clinico" />
         </>
+      ) : (
+        // Pantalla principal
+        <Stack.Screen name="(tabs)" />
       )}
     </Stack>
   );

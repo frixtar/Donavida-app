@@ -1,4 +1,3 @@
-// src/contexts/AuthContext.tsx
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { supabase } from '../../services/supabase';
 import { Session, User } from '@supabase/supabase-js';
@@ -12,6 +11,7 @@ type AuthContextData = {
   signIn: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
   register: (nombre: string, email: string, password: string, tipo_sangre: string, telefono?: string, genero?: string) => Promise<{ success: boolean; message?: string }>;
   signOut: () => Promise<void>;
+  updateUserLocation: (lat: number, lng: number, domicilio: string, codigoPostal: string) => Promise<{ success: boolean; message?: string }>;
 };
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -22,15 +22,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [medicalOnboardingPassed, setMedicalOnboardingPassed] = useState(false);
 
-  // Cargar sesión inicial y el flag médico
   useEffect(() => {
     const loadData = async () => {
-      // Obtener sesión
       const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
       setUser(session?.user ?? null);
-
-      // Si hay usuario, cargar su bandera medical_onboarding_completed
       if (session?.user) {
         const { data, error } = await supabase
           .from('profiles')
@@ -45,7 +41,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
     loadData();
 
-    // Escuchar cambios en la autenticación
     const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -64,9 +59,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setLoading(false);
     });
 
-    return () => {
-      listener?.subscription.unsubscribe();
-    };
+    return () => listener?.subscription.unsubscribe();
   }, []);
 
   const signIn = async (email: string, password: string) => {
@@ -79,43 +72,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const register = async (
-  nombreCompleto: string,   // ej: "Carlos Mendoza López"
-  email: string,
-  password: string,
-  tipo_sangre: string,
-  telefono: string,
-  fecha_nacimiento: string, // formato YYYY-MM-DD
-  genero: string
-) => {
-  try {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          nombre_completo: nombreCompleto,
-          tipo_sangre,
-          telefono,
-          fecha_nacimiento,
-          genero,
-          puntos: 0,
-          donaciones: 0,
+  const register = async (nombre: string, email: string, password: string, tipo_sangre: string, telefono?: string, genero?: string) => {
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { nombre, tipo_sangre, telefono, genero },
         },
-      },
-    });
-    if (error) throw error;
-    return { success: true };
-  } catch (error: any) {
-    return { success: false, message: error.message };
-  }
-};
+      });
+      if (error) throw error;
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, message: error.message };
+    }
+  };
 
   const signOut = async () => {
     await supabase.auth.signOut();
     setUser(null);
     setSession(null);
     setMedicalOnboardingPassed(false);
+  };
+
+  const updateUserLocation = async (lat: number, lng: number, domicilio: string, codigoPostal: string) => {
+    if (!user) return { success: false, message: 'No hay usuario logueado' };
+    const { error } = await supabase
+      .from('profiles')
+      .update({ latitud: lat, longitud: lng, domicilio, codigo_postal: codigoPostal, updated_at: new Date() })
+      .eq('id', user.id);
+    if (error) return { success: false, message: error.message };
+    return { success: true };
   };
 
   return (
@@ -129,6 +116,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         signIn,
         register,
         signOut,
+        updateUserLocation,
       }}
     >
       {children}
@@ -136,4 +124,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error('useAuth must be used within AuthProvider');
+  return context;
+};
